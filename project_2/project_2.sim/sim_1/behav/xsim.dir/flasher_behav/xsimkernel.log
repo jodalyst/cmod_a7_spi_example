@@ -1,0 +1,4 @@
+Running: xsim.dir/flasher_behav/xsimk -simmode gui -wdb flasher_behav.wdb -simrunnum 0 -socket 37621
+Design successfully loaded
+Design Loading Memory Usage: 41592 KB (Peak: 41592 KB)
+Design Loading CPU Usage: 10 ms
