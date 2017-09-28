@@ -26,6 +26,7 @@
 module spi_master(input sysclk,
     input [2:0] ss, //for selecting slaves from input side
     input [7:0] data_in, 
+    input [15:0] how_many_bytes, //if we want repeated reading...or writing..how long of a continuous are we going to deal with
     input miso,
     output reg sck,
     output reg mosi,
@@ -42,20 +43,31 @@ module spi_master(input sysclk,
 
     localparam IDLE = 4'h0,
         RUN = 4'h1,
+        FINISH = 4'h2;
         
-        
+    reg [15:0] bytes_to_run;
+    reg [15:0] byte_count;
     reg [4:0] state;
     reg [3:0] count;
 
     always @(posedge sysclk) begin
+        if (rst)begin
+            state <= IDLE;
+            //simply return to idle..abandon all hope
+        end 
         case (state)
             IDLE: begin
                 if (trigger)begin
                     buffer_out <= data_in;
+                    bytes_to_run <= how_many_bytes;
                     cs <= ~(8'b1<<(ss)); //pull sel down, leave others up
                     sck <= 1'b0;
+                    data_out <= 8'b0; //empty output register
                     count <= 3'b0; //reset count
-                    state <= RUN;                     
+                    state <= RUN; //move onto RUN
+                    busy <= 1'b1;
+                    new_data <= 1'b0;
+                    byte_count <= 16'b0;
                 end else begin
                     cs <= 8'b1;  //all high in rest state
                     sck <= 1'b0; //low in rest state
@@ -65,14 +77,29 @@ module spi_master(input sysclk,
             end 
             RUN: begin
                 sck <= ~sck; 
-                if (~sck)begin
-                    buffer_out <= {1'b0,buffer_out[7:1]};
-                    mosi <= buffer_out[0];
-                    count <= count +1;
+                if (count ==4'd8)begin
+                    new_data <= 1'b1; 
+                    if (byte_count +1'b1 == bytes_to_run) state <= FINISH;
+                    else begin
+                        count <= 
+                    end
+                    state <= FINISH;
+                end
+                else begin
+                    new_data <1'b0;
+                    if (sck)begin
+                        buffer_in <= {miso,buffer_in[7:1]};
+                        buffer_out <= {1'b0,buffer_out[7:1]};
+                        mosi <= buffer_out[0];
+                        count <= count +1;
+                    end
+                    else if (~sck)begin 
+                    end
+                end
+            end
+            FINISH: begin
                     
-
-
-
+                
 
             end
 
