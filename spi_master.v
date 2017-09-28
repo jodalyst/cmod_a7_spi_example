@@ -21,14 +21,17 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-//I'm the SPI-Fucking Master
-//sysclk for spi_master must be twice the desired SPI clock rate!
+//Version 1...you only need your sysclk to be the SCLK speed!
+//sysclk for spi_master must be twice the desired SPI clock rate! (version 1)
+// The issue with this implementation is that the first rising clock edge might glitch out...
+// The assertion of the clock enable is not guaranteed to turn on when the clock is low.
+//probably need to do a double speed with this one actually... See implementation 2 below
 module spi_master(input sysclk,
     input [2:0] ss, //for selecting slaves from input side
     input [7:0] data_in, 
     input [15:0] how_many_bytes, //if we want repeated reading...or writing..how long of a continuous are we going to deal with
     input miso,
-    output reg sck,
+    output sck,
     output reg mosi,
     output reg [7:0] cs, //for selecting slaves on output side (one hot wiring)
     output reg [7:0] data_out,
@@ -40,70 +43,171 @@ module spi_master(input sysclk,
 
     reg [7:0] buffer_out;
     reg [7:0] buffer_in;
-
+    reg sck_enable;
     localparam IDLE = 4'h0,
-        RUN = 4'h1,
-        FINISH = 4'h2;
+        PRERUN = 4'h1,
+        RUN = 4'h2,
+        FINISH = 4'h3;
         
     reg [15:0] bytes_to_run;
     reg [15:0] byte_count;
     reg [4:0] state;
     reg [3:0] count;
+    
+    assign sck = sck_enable; //pipe an output clock
 
     always @(posedge sysclk) begin
         if (rst)begin
-            state <= IDLE;
-            //simply return to idle..abandon all hope
+            state <= IDLE;//simply return to idle..abandon all hope
         end 
         case (state)
             IDLE: begin
+                sck_enable <= 1'b0; //always assume we are this in IDLE!
                 if (trigger)begin
                     buffer_out <= data_in;
                     bytes_to_run <= how_many_bytes;
                     cs <= ~(8'b1<<(ss)); //pull sel down, leave others up
-                    sck <= 1'b0;
                     data_out <= 8'b0; //empty output register
                     count <= 3'b0; //reset count
-                    state <= RUN; //move onto RUN
+                    state <= PRERUN; //move onto PRERUN
                     busy <= 1'b1;
                     new_data <= 1'b0;
                     byte_count <= 16'b0;
                 end else begin
                     cs <= 8'b1;  //all high in rest state
-                    sck <= 1'b0; //low in rest state
                     mosi <= 1'b0;  //all low in rest state
                     //and remain in IDLE
                 end
             end 
+            PRERUN: begin
+                sck_enable <= 1'b1; //turn on clock  
+                buffer_out <= {1'b0,buffer_out[7:1]}; //push new data in now that both sides have measured
+                mosi <= buffer_out[0]; //new value on mosi
+                count <= count +1;
+                state <= RUN;
+            end
             RUN: begin
-                sck <= ~sck; 
-                if (count ==4'd8)begin
-                    new_data <= 1'b1; 
-                    if (byte_count +1'b1 == bytes_to_run) state <= FINISH;
-                    else begin
-                        count <= 
+                buffer_in <= {miso,buffer_in[7:1]};//take a measurement and shove in
+                buffer_out <= {1'b0,buffer_out[7:1]}; //push new data in now that both sides have measured
+                mosi <= buffer_out[0]; //new value on mosi
+                if (count == 4'd7)begin //count +1 = 8 (we've counted/sent eight bits!
+                    new_data <= 1'b1;  //set the new data flag!
+                    data_out <= {miso,buffer_in[7:1]}; //load the data_out with what is in buffer_in (from the slave)
+                    if (byte_count +1'b1 == bytes_to_run)begin  //we done
+                        sck_enable <= 1'b0; //clock can shut off.
+                        state <= FINISH; //we've run the number of bits we needed!
                     end
-                    state <= FINISH;
+                    else begin
+                        count <= 3'b0;
+                        bytes_count <= bytes_count +1'b1;
+                        state <= RUN; //not needed, but for clarity
+                    end
                 end
                 else begin
-                    new_data <1'b0;
-                    if (sck)begin
-                        buffer_in <= {miso,buffer_in[7:1]};
-                        buffer_out <= {1'b0,buffer_out[7:1]};
-                        mosi <= buffer_out[0];
-                        count <= count +1;
-                    end
-                    else if (~sck)begin 
-                    end
+                    sck_enable <= 1'b1; //keep clock on
+                    count <= count +1;
+                    new_data <= 1'b0; //deassert new_data (usually keeps at 0...coming from a 
                 end
             end
             FINISH: begin
-                    
-                
-
+                cs <= 8'b1;
+                state <= IDLE;
             end
+    end
+endmodule
 
 
 
+//Version 2...you need your sysclk to be 2 times SCLK speed!
+module spi_master(input sysclk,
+    input [2:0] ss, //for selecting slaves from input side
+    input [7:0] data_in, 
+    input [15:0] how_many_bytes, //if we want repeated reading...or writing..how long of a continuous are we going to deal with
+    input miso,
+    reg sck,
+    output reg mosi,
+    output reg [7:0] cs, //for selecting slaves on output side (one hot wiring)
+    output reg [7:0] data_out,
+    output busy, 
+    output new_data,
+    input rst,
+    input trigger, //active high
+    );
+
+    reg [7:0] buffer_out; //"buffer for data to be sent to slave
+    reg [7:0] buffer_in; //buffer for data to be received from slave (and sent "out" to user)
+    localparam IDLE = 4'h0,
+        PRERUN1 = 4'h1,
+        PRERUN2 = 4'h2,
+        RUN = 4'h3,
+        FINISH = 4'h4;
+        
+    reg [15:0] bytes_to_run;
+    reg [15:0] byte_count;
+    reg [4:0] state;
+    reg [3:0] count;
+    
+
+    always @(posedge sysclk) begin
+        if (rst)begin
+            state <= IDLE;//simply return to idle..abandon all hope
+        end 
+        case (state)
+            IDLE: begin
+                sck <= 1'b0; //always assume we are this in IDLE!
+                if (trigger)begin
+                    buffer_out <= data_in;
+                    bytes_to_run <= how_many_bytes;
+                    cs <= ~(8'b1<<(ss)); //pull sel down, leave others up
+                    data_out <= 8'b0; //empty output register
+                    count <= 3'b0; //reset count
+                    state <= PRERUN; //move onto PRERUN
+                    busy <= 1'b1;
+                    new_data <= 1'b0;
+                    byte_count <= 16'b0;
+                end else begin
+                    cs <= 8'b1;  //all high in rest state
+                    mosi <= 1'b0;  //all low in rest state
+                    //and remain in IDLE
+                end
+            end 
+            PRERUN1: begin
+                sck <= 1'b0; //register
+                buffer_out <= {1'b0,buffer_out[7:1]}; //push new data in now that both sides have measured
+                mosi <= buffer_out[0]; //new value on mosi
+                count <= count +1;
+                state <= RUN;
+            end
+            PRERUN2: begin
+                sck <= 1'b1;
+            end
+            RUN: begin
+                buffer_in <= {miso,buffer_in[7:1]};//take a measurement and shove in
+                buffer_out <= {1'b0,buffer_out[7:1]}; //push new data in now that both sides have measured
+                mosi <= buffer_out[0]; //new value on mosi
+                if (count == 4'd8 && )begin //we've read 8 bits in...time to decide are we done or keep goin!
+                    new_data <= 1'b1;  //set the new data flag!
+                    data_out <= {miso,buffer_in[7:1]}; //load the data_out with what is in buffer_in (from the slave)
+                    if (byte_count +1'b1 == bytes_to_run)begin  //we done
+                        sck <= 1'b0; //clock can shut off.
+                        state <= FINISH; //we've run the number of bits we needed!
+                    end
+                    else begin
+                        count <= 3'b0;
+                        bytes_count <= bytes_count +1'b1; //one more byte!
+                        state <= RUN; //not needed, but for clarity
+                        sck <= ~sck; //keep going, child.
+                    end
+                end
+                else begin
+                    sck_enable <= ~sck; //keep clock on
+                    count <= count +1;
+                    new_data <= 1'b0; //deassert new_data (usually keeps at 0...coming from a 
+                end
+            end
+            FINISH: begin
+                cs <= 8'b1;
+                state <= IDLE;
+            end
     end
 endmodule
