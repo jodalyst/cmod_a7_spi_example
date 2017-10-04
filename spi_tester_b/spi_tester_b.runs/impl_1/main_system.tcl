@@ -42,12 +42,14 @@ proc step_failed { step } {
   close $ch
 }
 
+set_msg_config -id {Common 17-41} -limit 10000000
 
 start_step init_design
 set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
   set_param xicom.use_bs_reader 1
+  set_param tcl.collectionResultDisplayLimit 0
   create_project -in_memory -part xc7a35tcpg236-1
   set_property board_part digilentinc.com:cmod_a7-35t:part0:1.1 [current_project]
   set_property design_mode GateLvl [current_fileset]
@@ -56,12 +58,10 @@ set rc [catch {
   set_property parent.project_path /home/jodalyst/vivado/spi_tester_b/spi_tester_b.xpr [current_project]
   set_property ip_output_repo /home/jodalyst/vivado/spi_tester_b/spi_tester_b.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
-  set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
+  set_property XPM_LIBRARIES XPM_CDC [current_project]
   add_files -quiet /home/jodalyst/vivado/spi_tester_b/spi_tester_b.runs/synth_1/main_system.dcp
   read_ip -quiet /home/jodalyst/vivado/spi_tester_b/spi_tester_b.srcs/sources_1/ip/clk_wiz_0_1/clk_wiz_0.xci
   set_property is_locked true [get_files /home/jodalyst/vivado/spi_tester_b/spi_tester_b.srcs/sources_1/ip/clk_wiz_0_1/clk_wiz_0.xci]
-  read_ip -quiet /home/jodalyst/vivado/spi_tester_b/spi_tester_b.srcs/sources_1/ip/ila_0/ila_0.xci
-  set_property is_locked true [get_files /home/jodalyst/vivado/spi_tester_b/spi_tester_b.srcs/sources_1/ip/ila_0/ila_0.xci]
   read_xdc /home/jodalyst/project_2/project_2.srcs/constrs_1/imports/XDC/CmodA7_Master.xdc
   link_design -top main_system -part xc7a35tcpg236-1
   close_msg_db -file init_design.pb
@@ -138,7 +138,7 @@ start_step write_bitstream
 set ACTIVE_STEP write_bitstream
 set rc [catch {
   create_msg_db write_bitstream.pb
-  set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
+  set_property XPM_LIBRARIES XPM_CDC [current_project]
   catch { write_mem_info -force main_system.mmi }
   write_bitstream -force main_system.bit 
   catch {write_debug_probes -no_partial_ltxfile -quiet -force debug_nets}

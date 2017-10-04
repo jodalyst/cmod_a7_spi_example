@@ -1,7 +1,7 @@
 Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------
 | Tool Version              : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
-| Date                      : Tue Oct  3 15:47:07 2017
+| Date                      : Wed Oct  4 17:11:58 2017
 | Host                      : ubuntu running 64-bit Ubuntu 16.04.3 LTS
 | Command                   : report_io -file main_system_io_placed.rpt
 | Design                    : main_system
@@ -25,7 +25,7 @@ Table of Contents
 +---------------+
 | Total User IO |
 +---------------+
-|            16 |
+|            17 |
 +---------------+
 
 
@@ -48,7 +48,7 @@ Table of Contents
 | A11        |             | Dedicated  | DXP_0                        | Temp Sensor   |             |       0 |            |      |                     |                      |         |            |           |          |      |                  |
 | A12        |             | Dedicated  | VP_0                         | XADC          |             |       0 |            |      |                     |                      |         |            |           |          |      |                  |
 | A13        |             | Dedicated  | VREFN_0                      | XADC          |             |       0 |            |      |                     |                      |         |            |           |          |      |                  |
-| A14        |             | High Range | IO_L6P_T0_16                 | User IO       |             |      16 |            |      |                     |                      |         |            |           |          |      |                  |
+| A14        | pio[8]      | High Range | IO_L6P_T0_16                 | BIDIR         | LVCMOS33    |      16 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |
 | A15        | pio[6]      | High Range | IO_L6N_T0_VREF_16            | BIDIR         | LVCMOS33    |      16 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |
 | A16        | pio[2]      | High Range | IO_L12P_T1_MRCC_16           | BIDIR         | LVCMOS33    |      16 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |
 | A17        | led[0]      | High Range | IO_L12N_T1_MRCC_16           | OUTPUT        | LVCMOS33    |      16 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |

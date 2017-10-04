@@ -1,7 +1,7 @@
 Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
-| Date         : Tue Oct  3 15:46:25 2017
+| Date         : Wed Oct  4 17:11:56 2017
 | Host         : ubuntu running 64-bit Ubuntu 16.04.3 LTS
 | Command      : report_drc -file main_system_drc_opted.rpt
 | Design       : main_system
@@ -24,15 +24,13 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 12
-+----------+----------+------------------------------------------------------------------+------------+
-| Rule     | Severity | Description                                                      | Violations |
-+----------+----------+------------------------------------------------------------------+------------+
-| CFGBVS-1 | Warning  | Missing CFGBVS and CONFIG_VOLTAGE Design Properties              | 1          |
-| CKLD-2   | Warning  | Clock Net has IO Driver, not a Clock Buf, and/or non-Clock loads | 1          |
-| CSCL-1   | Warning  | Clocked by a non-clock net.                                      | 2          |
-| RPBF-3   | Warning  | IO port buffering is incomplete                                  | 8          |
-+----------+----------+------------------------------------------------------------------+------------+
+             Violations found: 9
++----------+----------+-----------------------------------------------------+------------+
+| Rule     | Severity | Description                                         | Violations |
++----------+----------+-----------------------------------------------------+------------+
+| CFGBVS-1 | Warning  | Missing CFGBVS and CONFIG_VOLTAGE Design Properties | 1          |
+| RPBF-3   | Warning  | IO port buffering is incomplete                     | 8          |
++----------+----------+-----------------------------------------------------+------------+
 
 2. REPORT DETAILS
 -----------------
@@ -47,21 +45,6 @@ Neither the CFGBVS nor CONFIG_VOLTAGE voltage property is set in the current_des
  #where value2 is the voltage provided to configuration bank 0
 
 Refer to the device configuration user guide for more information.
-Related violations: <none>
-
-CKLD-2#1 Warning
-Clock Net has IO Driver, not a Clock Buf, and/or non-Clock loads  
-Clock net sysclk_IBUF is directly driven by an IO rather than a Clock Buffer or may be an IO driving a mix of Clock Buffer and non-Clock loads. This connectivity should be reviewed and corrected as appropriate. Driver(s): sysclk_IBUF_inst/O
-Related violations: <none>
-
-CSCL-1#1 Warning
-Clocked by a non-clock net.  
-Net sysclk_IBUF is a non-clock net, connected to the clock port on HW Debug core dbg_hub.  Please verify this is correct.
-Related violations: <none>
-
-CSCL-1#2 Warning
-Clocked by a non-clock net.  
-Net sysclk_IBUF is a non-clock net, connected to the clock port on HW Debug core myila.  Please verify this is correct.
 Related violations: <none>
 
 RPBF-3#1 Warning
@@ -101,7 +84,7 @@ Related violations: <none>
 
 RPBF-3#8 Warning
 IO port buffering is incomplete  
-Device port pio[7] expects both input and output buffering but the buffers are incomplete.
+Device port pio[8] expects both input and output buffering but the buffers are incomplete.
 Related violations: <none>
 
 

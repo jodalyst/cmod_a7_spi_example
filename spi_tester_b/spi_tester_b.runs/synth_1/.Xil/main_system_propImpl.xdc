@@ -31,3 +31,5 @@ set_property src_info {type:XDC file:1 line:52 export:INPUT save:INPUT read:READ
 set_property -dict { PACKAGE_PIN A15   IOSTANDARD LVCMOS33 } [get_ports { pio[6] }]; #IO_L6N_T0_VREF_16 Sch=pio[07]
 set_property src_info {type:XDC file:1 line:53 export:INPUT save:INPUT read:READ} [current_design]
 set_property -dict { PACKAGE_PIN B15   IOSTANDARD LVCMOS33 } [get_ports { pio[7] }]; #IO_L11N_T1_SRCC_16 Sch=pio[08]
+set_property src_info {type:XDC file:1 line:54 export:INPUT save:INPUT read:READ} [current_design]
+set_property -dict { PACKAGE_PIN A14   IOSTANDARD LVCMOS33 } [get_ports { pio[8] }]; #IO_L6P_T0_16 Sch=pio[09]
