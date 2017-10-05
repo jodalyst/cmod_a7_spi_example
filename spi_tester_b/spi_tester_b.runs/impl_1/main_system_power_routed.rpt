@@ -1,7 +1,7 @@
 Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
-| Date             : Wed Oct  4 17:12:13 2017
+| Date             : Thu Oct  5 14:24:42 2017
 | Host             : ubuntu running 64-bit Ubuntu 16.04.3 LTS
 | Command          : report_power -file main_system_power_routed.rpt -pb main_system_power_summary_routed.pb -rpx main_system_power_routed.rpx
 | Design           : main_system
@@ -30,12 +30,12 @@ Table of Contents
 ----------
 
 +--------------------------+-------+
-| Total On-Chip Power (W)  | 0.184 |
-| Dynamic (W)              | 0.112 |
+| Total On-Chip Power (W)  | 0.191 |
+| Dynamic (W)              | 0.119 |
 | Device Static (W)        | 0.072 |
 | Effective TJA (C/W)      | 5.0   |
-| Max Ambient (C)          | 84.1  |
-| Junction Temperature (C) | 25.9  |
+| Max Ambient (C)          | 84.0  |
+| Junction Temperature (C) | 26.0  |
 | Confidence Level         | Low   |
 | Setting File             | ---   |
 | Simulation Activity File | ---   |
@@ -50,17 +50,17 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |     0.001 |        8 |       --- |             --- |
-| Slice Logic    |    <0.001 |      161 |       --- |             --- |
-|   LUT as Logic |    <0.001 |       58 |     20800 |            0.28 |
-|   CARRY4       |    <0.001 |       13 |      8150 |            0.16 |
+| Slice Logic    |    <0.001 |      277 |       --- |             --- |
+|   LUT as Logic |    <0.001 |      108 |     20800 |            0.52 |
+|   CARRY4       |    <0.001 |       19 |      8150 |            0.23 |
+|   Register     |    <0.001 |      112 |     41600 |            0.27 |
 |   BUFG         |    <0.001 |        1 |        32 |            3.13 |
-|   Register     |    <0.001 |       68 |     41600 |            0.16 |
 |   Others       |     0.000 |        8 |       --- |             --- |
-| Signals        |    <0.001 |      111 |       --- |             --- |
+| Signals        |    <0.001 |      207 |       --- |             --- |
 | MMCM           |     0.104 |        1 |         5 |           20.00 |
-| I/O            |     0.006 |       15 |       106 |           14.15 |
+| I/O            |     0.012 |       20 |       106 |           18.87 |
 | Static Power   |     0.072 |          |           |                 |
-| Total          |     0.184 |          |           |                 |
+| Total          |     0.191 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -70,9 +70,9 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |     0.012 |       0.002 |      0.010 |
+| Vccint    |       1.000 |     0.012 |       0.003 |      0.010 |
 | Vccaux    |       1.800 |     0.071 |       0.058 |      0.013 |
-| Vcco33    |       3.300 |     0.003 |       0.002 |      0.001 |
+| Vcco33    |       3.300 |     0.004 |       0.003 |      0.001 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
 | Vcco18    |       1.800 |     0.000 |       0.000 |      0.000 |
 | Vcco15    |       1.500 |     0.000 |       0.000 |      0.000 |
@@ -144,7 +144,7 @@ Table of Contents
 +--------------+-----------+
 | Name         | Power (W) |
 +--------------+-----------+
-| main_system  |     0.112 |
+| main_system  |     0.119 |
 |   cw         |     0.104 |
 |     inst     |     0.104 |
 |   lcd_dimmer |    <0.001 |

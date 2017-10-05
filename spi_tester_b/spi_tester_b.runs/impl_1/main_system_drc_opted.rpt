@@ -1,7 +1,7 @@
 Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
-| Date         : Wed Oct  4 17:11:56 2017
+| Date         : Thu Oct  5 14:24:25 2017
 | Host         : ubuntu running 64-bit Ubuntu 16.04.3 LTS
 | Command      : report_drc -file main_system_drc_opted.rpt
 | Design       : main_system
@@ -24,12 +24,12 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 9
+             Violations found: 13
 +----------+----------+-----------------------------------------------------+------------+
 | Rule     | Severity | Description                                         | Violations |
 +----------+----------+-----------------------------------------------------+------------+
 | CFGBVS-1 | Warning  | Missing CFGBVS and CONFIG_VOLTAGE Design Properties | 1          |
-| RPBF-3   | Warning  | IO port buffering is incomplete                     | 8          |
+| RPBF-3   | Warning  | IO port buffering is incomplete                     | 12         |
 +----------+----------+-----------------------------------------------------+------------+
 
 2. REPORT DETAILS
@@ -54,37 +54,57 @@ Related violations: <none>
 
 RPBF-3#2 Warning
 IO port buffering is incomplete  
-Device port pio[1] expects both input and output buffering but the buffers are incomplete.
+Device port pio[10] expects both input and output buffering but the buffers are incomplete.
 Related violations: <none>
 
 RPBF-3#3 Warning
 IO port buffering is incomplete  
-Device port pio[2] expects both input and output buffering but the buffers are incomplete.
+Device port pio[11] expects both input and output buffering but the buffers are incomplete.
 Related violations: <none>
 
 RPBF-3#4 Warning
 IO port buffering is incomplete  
-Device port pio[3] expects both input and output buffering but the buffers are incomplete.
+Device port pio[12] expects both input and output buffering but the buffers are incomplete.
 Related violations: <none>
 
 RPBF-3#5 Warning
 IO port buffering is incomplete  
-Device port pio[4] expects both input and output buffering but the buffers are incomplete.
+Device port pio[1] expects both input and output buffering but the buffers are incomplete.
 Related violations: <none>
 
 RPBF-3#6 Warning
 IO port buffering is incomplete  
-Device port pio[5] expects both input and output buffering but the buffers are incomplete.
+Device port pio[2] expects both input and output buffering but the buffers are incomplete.
 Related violations: <none>
 
 RPBF-3#7 Warning
 IO port buffering is incomplete  
-Device port pio[6] expects both input and output buffering but the buffers are incomplete.
+Device port pio[3] expects both input and output buffering but the buffers are incomplete.
 Related violations: <none>
 
 RPBF-3#8 Warning
 IO port buffering is incomplete  
+Device port pio[4] expects both input and output buffering but the buffers are incomplete.
+Related violations: <none>
+
+RPBF-3#9 Warning
+IO port buffering is incomplete  
+Device port pio[5] expects both input and output buffering but the buffers are incomplete.
+Related violations: <none>
+
+RPBF-3#10 Warning
+IO port buffering is incomplete  
+Device port pio[6] expects both input and output buffering but the buffers are incomplete.
+Related violations: <none>
+
+RPBF-3#11 Warning
+IO port buffering is incomplete  
 Device port pio[8] expects both input and output buffering but the buffers are incomplete.
+Related violations: <none>
+
+RPBF-3#12 Warning
+IO port buffering is incomplete  
+Device port pio[9] expects both input and output buffering but the buffers are incomplete.
 Related violations: <none>
 
 

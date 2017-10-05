@@ -1,7 +1,7 @@
 Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
-| Date         : Wed Oct  4 17:11:58 2017
+| Date         : Thu Oct  5 14:24:28 2017
 | Host         : ubuntu running 64-bit Ubuntu 16.04.3 LTS
 | Command      : report_control_sets -verbose -file main_system_control_sets_placed.rpt
 | Design       : main_system
@@ -22,8 +22,8 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Number of unique control sets                            |     7 |
-| Unused register locations in slices containing registers |    20 |
+| Number of unique control sets                            |    12 |
+| Unused register locations in slices containing registers |    32 |
 +----------------------------------------------------------+-------+
 
 
@@ -33,39 +33,45 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |              14 |            5 |
+| No           | No                    | No                     |              22 |           11 |
 | No           | No                    | Yes                    |               0 |            0 |
 | No           | Yes                   | No                     |              24 |            6 |
-| Yes          | No                    | No                     |              30 |           10 |
+| Yes          | No                    | No                     |              38 |           16 |
 | Yes          | No                    | Yes                    |               0 |            0 |
-| Yes          | Yes                   | No                     |               0 |            0 |
+| Yes          | Yes                   | No                     |              28 |            9 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
 3. Detailed Control Set Information
 -----------------------------------
 
-+-------------------+----------------------+------------------+------------------+----------------+
-|    Clock Signal   |     Enable Signal    | Set/Reset Signal | Slice Load Count | Bel Load Count |
-+-------------------+----------------------+------------------+------------------+----------------+
-|  led_OBUF_BUFG[1] | spm/cs[1]_i_1_n_0    |                  |                2 |              2 |
-|  led_OBUF_BUFG[1] |                      |                  |                2 |              4 |
-|  led_OBUF_BUFG[1] | spm/count[3]_i_1_n_0 |                  |                1 |              4 |
-|  led_OBUF_BUFG[1] | sel                  |                  |                2 |              8 |
-|  cw/inst/clk_out1 |                      |                  |                3 |             10 |
-|  led_OBUF_BUFG[1] | spm/__3/i__n_0       |                  |                5 |             16 |
-|  led_OBUF_BUFG[1] |                      | btn_IBUF[0]      |                6 |             24 |
-+-------------------+----------------------+------------------+------------------+----------------+
++-------------------+-------------------+---------------------------+------------------+----------------+
+|    Clock Signal   |   Enable Signal   |      Set/Reset Signal     | Slice Load Count | Bel Load Count |
++-------------------+-------------------+---------------------------+------------------+----------------+
+|  cw/inst/clk_out1 | dc_reg            |                           |                1 |              1 |
+|  led_OBUF_BUFG[1] | spm/__8/i__n_0    |                           |                1 |              1 |
+|  led_OBUF_BUFG[1] | spm/cs[1]_i_1_n_0 |                           |                2 |              2 |
+|  cw/inst/clk_out1 | spm/E[0]          |                           |                3 |              4 |
+|  led_OBUF_BUFG[1] | spm/__1/i__n_0    | spm/count[3]_i_1_n_0      |                2 |              4 |
+|  led_OBUF_BUFG[1] |                   |                           |                4 |              6 |
+|  led_OBUF_BUFG[1] | spm/__1/i__n_0    |                           |                2 |              6 |
+|  led_OBUF_BUFG[1] | sel               |                           |                2 |              8 |
+|  cw/inst/clk_out1 |                   |                           |                7 |             16 |
+|  led_OBUF_BUFG[1] | spm/__6/i__n_0    |                           |                5 |             16 |
+|  cw/inst/clk_out1 | pause_counter     | pause_counter[23]_i_1_n_0 |                7 |             24 |
+|  led_OBUF_BUFG[1] |                   | btn_IBUF[0]               |                6 |             24 |
++-------------------+-------------------+---------------------------+------------------+----------------+
 
 
 +--------+-----------------------+
 | Fanout | Number of ControlSets |
 +--------+-----------------------+
+| 1      |                     2 |
 | 2      |                     1 |
 | 4      |                     2 |
+| 6      |                     2 |
 | 8      |                     1 |
-| 10     |                     1 |
-| 16+    |                     2 |
+| 16+    |                     4 |
 +--------+-----------------------+
 
 
