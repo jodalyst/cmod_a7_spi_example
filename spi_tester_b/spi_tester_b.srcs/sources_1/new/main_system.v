@@ -67,7 +67,7 @@ module main_system(input wire sysclk,
                 r <= 0;
             else
                 r <= r + 1;
-            if (&r) brightness<=brightness +1;
+            if (&r) brightness<=8'd127;
         end
    
     assign led0_r =1'b1; //r[20]?1'b1:1'b0;   //6hz 25% pwm
@@ -109,7 +109,7 @@ module main_system(input wire sysclk,
     
     assign pio[12:9] = state;
     reg [3:0] state;
-    localparam IDLE = 4'hA;
+    localparam IDLE = 4'h0;
     localparam START1 = 4'h1;
     localparam RUN1 = 4'h2;
     localparam PAUSE1 = 4'h3;
@@ -119,6 +119,9 @@ module main_system(input wire sysclk,
     localparam START3 = 4'h7;
     localparam RUN3 = 4'h8;
     localparam PAUSE3 = 4'h9;
+    localparam START4 = 4'hA;
+    localparam RUN4 = 4'hB;
+    localparam PAUSE4 = 4'hC;
     
     reg [23:0] pause_counter;
     
@@ -130,19 +133,23 @@ module main_system(input wire sysclk,
     localparam RAMWR = 8'h2C; //ramwrite
     localparam MADCTL = 8'h36; //axis control
     localparam COLMOD = 8'h3A; //colormode;
+    localparam RDDID = 8'h04;
+    localparam RDDPM = 8'h0A; //Powermode
     always @(posedge fastclk)begin
         if (clock_125mhz)begin
             case(state)
                 IDLE: begin
-                    led_out_reg <= 1'b0;
-                    dc_reg <= 1'b1;
-                    trigger <= 1'b0;
-                    rst_reg <=1'b0;
                     if(btn[1] == 1)begin
                         selection <= 3'b0; //pick device 0
                         bytes_to_send <= 16'b1; //send one byte
                         data_to_send <= SWRESET;
                         state <= START1;
+                        dc_reg <= 1'b0;
+                    end else begin
+                        led_out_reg <= 1'b0;
+                        dc_reg <= 1'b1;
+                        trigger <= 1'b0;
+                        rst_reg <=1'b0;
                     end
                 end
                 START1: begin
@@ -194,7 +201,30 @@ module main_system(input wire sysclk,
                 RUN3: begin
                    trigger <=1'b0;
                    pause_counter <= 24'b0;
-                   if (new_data) state <= IDLE; 
+                   if (new_data) state <= PAUSE3; 
+                end
+                PAUSE3: begin
+                    if (&pause_counter)begin //wait until pause is done
+                        state <= START4;
+                        dc_reg<= 1'b0;
+                        data_to_send <= RDDPM;
+                        bytes_to_send <= 16'd3;
+                    end else begin
+                        pause_counter <= pause_counter +1;
+                    end
+                end
+                START4: begin
+                    trigger <=1'b1;
+                    if (~new_data & spi_busy) begin
+                        state <= RUN4;
+                    end
+                end
+                RUN4: begin
+                    if(trigger)begin
+                        trigger <=1'b0;
+                         data_to_send <=8'b0; //put zeros on line immediately
+                    end else if (~spi_busy) state <= IDLE;
+                   pause_counter <= 24'b0;
                 end
                 default:
                     state <= IDLE;
