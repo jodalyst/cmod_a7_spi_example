@@ -89,22 +89,12 @@ module main_system(input wire sysclk,
     localparam RUN4 = 4'hB;
     localparam PAUSE4 = 4'hC;
         
-    localparam SWRESET = 8'h01; //software reset
-    localparam SLPOUT = 8'h11; //sleep out
-    localparam DISPON = 8'h29; //display turn on
-    localparam CASET = 8'h2A; //set column
-    localparam RASET = 8'h2B; //set row
-    localparam RAMWR = 8'h2C; //ramwrite
-    localparam MADCTL = 8'h36; //axis control
-    localparam COLMOD = 8'h3A; //colormode;
-    localparam RDDID = 8'h04;
-    localparam RDDPM = 8'h0A; //Powermode
     always @(posedge sysclk)begin
         case(state)
             IDLE: begin
                 if(btn[1] == 1)begin
                     selection <= 3'b0; //pick device 0
-                    bytes_to_send <= 16'b1; //send one byte
+                    bytes_to_send <= 16'b4; //send two bytes and read one byte
                     data_to_send <= 8'h1;
                     state <= START1;
                 end else begin
@@ -117,7 +107,6 @@ module main_system(input wire sysclk,
                     state <= RUN1;
                 end
                 state <= RUN1;
-                pause_counter <= 24'b0;
             end
             RUN1:begin
                 trigger <=1'b0;
@@ -150,40 +139,6 @@ module main_system(input wire sysclk,
                 end else begin
                     pause_counter <= pause_counter +1;
                 end
-            end
-            START3: begin
-                trigger <=1'b1;
-                if (~new_data & spi_busy) begin
-                    state <= RUN3;
-                end
-            end
-            RUN3: begin
-               trigger <=1'b0;
-               pause_counter <= 24'b0;
-               if (new_data) state <= PAUSE3; 
-            end
-            PAUSE3: begin
-                if (&pause_counter)begin //wait until pause is done
-                    state <= START4;
-                    dc_reg<= 1'b0;
-                    data_to_send <= RDDPM;
-                    bytes_to_send <= 16'd3;
-                end else begin
-                    pause_counter <= pause_counter +1;
-                end
-            end
-            START4: begin
-                trigger <=1'b1;
-                if (~new_data & spi_busy) begin
-                    state <= RUN4;
-                end
-            end
-            RUN4: begin
-                if(trigger)begin
-                    trigger <=1'b0;
-                     data_to_send <=8'b0; //put zeros on line immediately
-                end else if (~spi_busy) state <= IDLE;
-               pause_counter <= 24'b0;
             end
             default:
                 state <= IDLE;

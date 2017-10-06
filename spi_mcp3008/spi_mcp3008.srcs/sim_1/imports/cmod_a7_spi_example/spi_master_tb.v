@@ -24,10 +24,11 @@
 
 module spi_master_tb;
 
+    parameter width = 24;
 	// Inputs
 	reg sysclk;
 	reg [2:0] ss;
-	reg [7:0] data_in;
+	reg [width-1:0] data_in;
 	reg [15:0] how_many_bytes;
 	reg miso;
 	reg rst;
@@ -37,13 +38,13 @@ module spi_master_tb;
 	wire sck;
 	wire mosi;
 	wire [7:0] cs;
-	wire [7:0] data_out;
+	wire [width-1:0] data_out;
 	wire busy;
 	wire new_data;
 	wire spi_busy;
 
 	// Instantiate the Unit Under Test (UUT)
-	spi_master uut (
+	spi_master #(.INOUTWIDTH(width)) uut
 		.sysclk(sysclk), 
 		.ss(ss), 
 		.data_in(data_in), 
@@ -77,20 +78,20 @@ module spi_master_tb;
 		rst = 0;
 		ss = 3'b000;
 		
-		data_in = 8'h01;
+		data_in = {8'b11001000,16'hFF00};
 		how_many_bytes = 1;
 		#30;
 		trigger=1;
 		#30;
 		trigger=0;
-		#800;
+		#1800;
 		data_in = 8'h11;
 		#30;
 		trigger = 1;
 		#20;
 		trigger=0;
 		data_in = 8'h29;
-		#800;
+		#1800;
 		trigger = 1;
 		#30;
 		trigger=0;
