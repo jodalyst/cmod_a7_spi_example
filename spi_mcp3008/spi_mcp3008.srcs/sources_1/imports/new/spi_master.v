@@ -23,8 +23,7 @@
 
 
 //Version 2...you need your sysclk to be 2 times SCLK speed!
-module spi_master
-    #(parameter INOUTWIDTH = 24;)
+module spi_master #(parameter INOUTWIDTH = 24)
     (input sysclk,
     input [2:0] ss, //for selecting slaves from input side
     input [INOUTWIDTH-1:0] data_in, 
@@ -42,9 +41,9 @@ module spi_master
     );
    
     
-	 reg [7:0] buffer_in; //buffer for data to be received from slave (and sent "out" to user)
+	 reg [INOUTWIDTH-1:0] buffer_in; //buffer for data to be received from slave (and sent "out" to user)
 
-    reg [7:0] buffer_out; //"buffer for data to be sent to slave
+    reg [INOUTWIDTH-1:0] buffer_out; //"buffer for data to be sent to slave
     //output reg [7:0] buffer_in; //buffer for data to be received from slave (and sent "out" to user)
     localparam IDLE = 4'h0,
         PRERUN1 = 4'h1,

@@ -1,5 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sources_1/imports/new/spi_master.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module spi_master
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sim_1/imports/cmod_a7_spi_example/spi_master_tb.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module spi_master_tb
-ERROR: [VRFC 10-1412] syntax error near sysclk [/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sim_1/imports/cmod_a7_spi_example/spi_master_tb.v:47]
-ERROR: [VRFC 10-1412] syntax error near . [/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sim_1/imports/cmod_a7_spi_example/spi_master_tb.v:49]
-ERROR: [VRFC 10-1040] module spi_master_tb ignored due to previous errors [/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sim_1/imports/cmod_a7_spi_example/spi_master_tb.v:25]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

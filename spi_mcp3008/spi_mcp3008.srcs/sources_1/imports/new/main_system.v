@@ -44,7 +44,7 @@ module main_system(input wire sysclk,
                 r <= 0;
             else
                 r <= r + 1;
-            if (&r) brightness<=8'd127;
+            //if (&r) brightness<=8'd127;
         end
     assign led0_r =1'b1; //r[20]?1'b1:1'b0;   //6hz 25% pwm
     assign led0_g =1'b1; //r[21]?1'b1:1'b0;   //12hz
@@ -65,7 +65,7 @@ module main_system(input wire sysclk,
     wire [7:0] chip_selects; ///chip selects
     assign cs = chip_selects[0]; //tft chip select
     
-    spi_master spm(.sysclk(clock_25mhz),.ss(selection),.data_in(data_to_send),
+    spi_master #(.INOUTWIDTH(8)) spm(.sysclk(clock_25mhz),.ss(selection),.data_in(data_to_send),
     .how_many_bytes(bytes_to_send), .new_data(new_data), .cs(chip_selects),
     .mosi(si),
     .miso(so),
@@ -94,7 +94,7 @@ module main_system(input wire sysclk,
             IDLE: begin
                 if(btn[1] == 1)begin
                     selection <= 3'b0; //pick device 0
-                    bytes_to_send <= 16'b4; //send two bytes and read one byte
+                    bytes_to_send <= 16'd4; //send two bytes and read one byte
                     data_to_send <= 8'h1;
                     state <= START1;
                 end else begin
@@ -104,21 +104,17 @@ module main_system(input wire sysclk,
             START1: begin
                 trigger<=1'b1;
                 if (~new_data && spi_busy) begin
-                    state <= RUN1;
+                    state <= WRITE1;
                 end
-                state <= RUN1;
+                state <= WRITE1;
             end
-            RUN1:begin
+            WRITE1:begin
                 trigger <=1'b0;
-                if (new_data) state <= PAUSE1;
+                if (new_data) state <= READ1;
             end
-            PAUSE1:begin
-                if (&pause_counter)begin //wait until pause is done
+            READ1:begin
                     state <= START2;
-                    data_to_send <= SLPOUT;
-                end else begin
-                    pause_counter <= pause_counter +1;
-                end
+                    data_to_send <= 8'b0;
             end
             START2: begin
                 trigger <=1'b1;
@@ -128,17 +124,11 @@ module main_system(input wire sysclk,
             end
             RUN2: begin
                trigger <=1'b0;
-               pause_counter <= 24'b0;
                if (new_data) state <= PAUSE2;
                
             end
             PAUSE2: begin
-                if (&pause_counter)begin //wait until pause is done
-                    state <= START3;
-                    data_to_send <= DISPON;
-                end else begin
-                    pause_counter <= pause_counter +1;
-                end
+                state <= IDLE;
             end
             default:
                 state <= IDLE;

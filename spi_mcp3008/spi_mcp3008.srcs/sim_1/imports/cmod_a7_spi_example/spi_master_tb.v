@@ -44,7 +44,7 @@ module spi_master_tb;
 	wire spi_busy;
 
 	// Instantiate the Unit Under Test (UUT)
-	spi_master #(.INOUTWIDTH(width)) uut
+	spi_master #(.INOUTWIDTH(width)) uut(
 		.sysclk(sysclk), 
 		.ss(ss), 
 		.data_in(data_in), 
