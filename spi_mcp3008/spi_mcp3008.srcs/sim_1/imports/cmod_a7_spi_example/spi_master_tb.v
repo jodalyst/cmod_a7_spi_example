@@ -28,7 +28,7 @@ module spi_master_tb;
 	// Inputs
 	reg sysclk;
 	reg [2:0] ss;
-	reg [width-1:0] data_in;
+	reg [width-1:0] data_to_send;
 	reg [15:0] how_many_bytes;
 	reg miso;
 	reg rst;
@@ -38,7 +38,7 @@ module spi_master_tb;
 	wire sck;
 	wire mosi;
 	wire [7:0] cs;
-	wire [width-1:0] data_out;
+	wire [width-1:0] data_in;
 	wire busy;
 	wire new_data;
 	wire spi_busy;
@@ -47,13 +47,13 @@ module spi_master_tb;
 	spi_master #(.INOUTWIDTH(width)) uut(
 		.sysclk(sysclk), 
 		.ss(ss), 
-		.data_in(data_in), 
+		.data_to_send(data_to_send), 
 		.how_many_bytes(how_many_bytes), 
 		.miso(miso), 
 		.sck(sck), 
 		.mosi(mosi), 
 		.cs(cs), 
-		.data_out(data_out), 
+		.data_in(data_in), 
 		.busy(busy), 
 		.new_data(new_data), 
 		.rst(rst), 
@@ -65,7 +65,6 @@ module spi_master_tb;
 		// Initialize Inputs
 		sysclk = 0;
 		ss = 0;
-		data_in = 0;
 		how_many_bytes = 0;
 		miso = 0;
 		rst = 0;
@@ -78,19 +77,17 @@ module spi_master_tb;
 		rst = 0;
 		ss = 3'b000;
 		
-		data_in = {8'b11001000,16'hFF00};
+		data_to_send = {8'b11001000,16'hFF00};
 		how_many_bytes = 1;
 		#30;
 		trigger=1;
 		#30;
 		trigger=0;
 		#1800;
-		data_in = 8'h11;
 		#30;
 		trigger = 1;
 		#20;
 		trigger=0;
-		data_in = 8'h29;
 		#1800;
 		trigger = 1;
 		#30;

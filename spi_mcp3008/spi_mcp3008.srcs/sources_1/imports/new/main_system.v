@@ -26,14 +26,12 @@ module main_system(input wire sysclk,
     output led0_b, //blue led output
     output led0_g, //green led output
     output led0_r, //red led output
-    inout [3:0]g //inouts (see xdc file)
+    inout [3:0]g, //inouts (see xdc file)
+    inout [1:0]pio
     );
     wire cs, mosi,miso,sck; //chip select, si, so, sck
-        
+    parameter commwidth = 18;
     assign g[3:0] = {sck,miso,mosi,cs}; //link pins to wires with understandable names
-
-
-
     //some random heartbeat crap for LEDs to know it is uploading    
     assign led[1] = sysclk;
     //led flashing "heartbeat" code...
@@ -52,23 +50,25 @@ module main_system(input wire sysclk,
     assign led[0] = r[23];
     //assign pio[8] = r[23];
     //done
-    
-    
+    reg [7:0] brightness;
+    dimmer dm(.clock(sysclk), .brightness(brightness), .driver(pio[0]));
+    assign pio[1] = 1'b0;
 
-    wire [7:0] data_received;
+    wire [commwidth-1:0] data_received;
     wire new_data; //new data is present!
     wire spi_busy;
     reg trigger; //used to trigger spi;
     reg [2:0] selection; //which device to pick
     reg [15:0] bytes_to_send; //number of bytes to send
-    reg [7:0] data_to_send; //data to send out
+    reg [commwidth-1:0] data_to_send; //data to send out
+    reg rst;
     wire [7:0] chip_selects; ///chip selects
     assign cs = chip_selects[0]; //tft chip select
     
-    spi_master #(.INOUTWIDTH(8)) spm(.sysclk(clock_25mhz),.ss(selection),.data_in(data_to_send),
-    .how_many_bytes(bytes_to_send), .new_data(new_data), .cs(chip_selects),
-    .mosi(si),
-    .miso(so),
+    spi_master #(.INOUTWIDTH(18)) spm(.sysclk(sysclk),.ss(selection),.data_to_send(data_to_send),
+    .how_many_bytes(bytes_to_send), .new_data(new_data), .cs(chip_selects), .data_in(data_received),
+    .mosi(mosi),
+    .miso(miso),
     .sck(sck),
     .rst(rst),
     .busy(spi_busy),
@@ -76,8 +76,8 @@ module main_system(input wire sysclk,
     
     reg [3:0] state;
     localparam IDLE = 4'h0;
-    localparam START1 = 4'h1;
-    localparam WRITE1 = 4'h2;
+    localparam T1 = 4'h1;
+    localparam RW1 = 4'h2;
     localparam READ1 = 4'h3;
     localparam START2 = 4'h4;
     localparam RUN2 = 4'h5;
@@ -93,42 +93,28 @@ module main_system(input wire sysclk,
         case(state)
             IDLE: begin
                 if(btn[1] == 1)begin
+                    rst <= 1'b0;
                     selection <= 3'b0; //pick device 0
-                    bytes_to_send <= 16'd4; //send two bytes and read one byte
-                    data_to_send <= 8'h1;
-                    state <= START1;
+                    bytes_to_send <= 16'd1; //send two bytes and read one byte
+                    data_to_send <= 18'b11_001_0000_0000_0000;
+                    state <= T1;
                 end else begin
                     trigger <= 1'b0;
                 end
             end
-            START1: begin
+            T1: begin
                 trigger<=1'b1;
                 if (~new_data && spi_busy) begin
-                    state <= WRITE1;
+                    state <= RW1;
                 end
-                state <= WRITE1;
+                //state <= RW1;
             end
-            WRITE1:begin
+            RW1:begin
                 trigger <=1'b0;
-                if (new_data) state <= READ1;
-            end
-            READ1:begin
-                    state <= START2;
-                    data_to_send <= 8'b0;
-            end
-            START2: begin
-                trigger <=1'b1;
-                if (~new_data && spi_busy) begin
-                    state <= RUN2;
+                if (new_data)begin
+                    state <= IDLE;
+                    brightness <= data_received[7:0];
                 end
-            end
-            RUN2: begin
-               trigger <=1'b0;
-               if (new_data) state <= PAUSE2;
-               
-            end
-            PAUSE2: begin
-                state <= IDLE;
             end
             default:
                 state <= IDLE;

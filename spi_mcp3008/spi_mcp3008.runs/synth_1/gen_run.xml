@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7a35tcpg236-1" LaunchTime="1507489453">
+<GenRun Id="synth_1" LaunchPart="xc7a35tcpg236-1" LaunchTime="1507499624">
   <File Type="VDS-TIMING-PB" Name="main_system_timing_summary_synth.pb"/>
   <File Type="VDS-TIMINGSUMMARY" Name="main_system_timing_summary_synth.rpt"/>
   <File Type="RDS-DCP" Name="main_system.dcp"/>
@@ -10,6 +10,15 @@
   <File Type="PA-TCL" Name="main_system.tcl"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/imports/new/dimmer.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../spi_tester_b/spi_tester_b.srcs/sources_1/new/dimmer.v"/>
+        <Attr Name="ImportTime" Val="1507150424"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
     <File Path="$PSRCDIR/sources_1/imports/new/spi_master.v">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../../project_2/project_2.srcs/sources_1/new/spi_master.v"/>
@@ -28,20 +37,9 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/imports/new/dimmer.v">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="ImportPath" Val="$PPRDIR/../spi_tester_b/spi_tester_b.srcs/sources_1/new/dimmer.v"/>
-        <Attr Name="ImportTime" Val="1507150424"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <Config>
       <Option Name="DesignMode" Val="RTL"/>
       <Option Name="TopModule" Val="main_system"/>
-      <Option Name="TopAutoSet" Val="TRUE"/>
     </Config>
   </FileSet>
   <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">

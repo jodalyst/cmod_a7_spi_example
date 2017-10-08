@@ -9,4 +9,4 @@ then
 exit $RETVAL
 fi
 }
-ExecStep $xv_path/bin/xsim spi_master_tb_behav -key {Behavioral:sim_1:Functional:spi_master_tb} -tclbatch spi_master_tb.tcl -log simulate.log
+ExecStep $xv_path/bin/xsim main_sys_tb_behav -key {Behavioral:sim_1:Functional:main_sys_tb} -tclbatch main_sys_tb.tcl -log simulate.log

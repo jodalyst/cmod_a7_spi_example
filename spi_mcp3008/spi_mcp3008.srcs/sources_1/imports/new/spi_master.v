@@ -26,13 +26,13 @@
 module spi_master #(parameter INOUTWIDTH = 24)
     (input sysclk,
     input [2:0] ss, //for selecting slaves from input side
-    input [INOUTWIDTH-1:0] data_in, 
+    input [INOUTWIDTH-1:0] data_to_send, 
     input [15:0] how_many_bytes, //if we want repeated reading...or writing..how long of a continuous are we going to deal with
     input miso,
     output reg sck,
     output reg mosi,
     output reg [7:0] cs, //for selecting slaves on output side (one hot wiring)
-    output reg [INOUTWIDTH-1:0] data_out,
+    output reg [INOUTWIDTH-1:0] data_in,
     output reg busy, 
     output reg new_data,
 	output reg load,
@@ -65,11 +65,11 @@ module spi_master #(parameter INOUTWIDTH = 24)
 					IDLE: begin
 						 sck <= 1'b0; //always assume we are this in IDLE!
 						 if (trigger)begin
-							  buffer_out <= data_in;
+							  buffer_out <= data_to_send;
 							  buffer_in<= 8'b0;
 							  bytes_to_run <= how_many_bytes;
 							  cs <= ~(8'b1<<(ss)); //pull sel down, leave others up
-							  data_out <= 8'b0; //empty output register
+							  data_in <= 0; //empty output register
 							  count <= 8'b0; //reset count
 							  state <= PRERUN1; //move onto PRERUN
 							  busy <= 1'b1;
@@ -101,18 +101,18 @@ module spi_master #(parameter INOUTWIDTH = 24)
 						     buffer_in <= {miso,buffer_in[INOUTWIDTH-1:1]};//take a measurement and shove in
 							  if (count == INOUTWIDTH)begin //we've read 8 bits in...time to decide are we done or keep goin!
 							      new_data <= 1'b1;  //set the new data flag!
-							      data_out <= {miso,buffer_in[INOUTWIDTH-1:1]}; //load the data_out with what is in buffer_in (from the slave)
+							      data_in <= {miso,buffer_in[INOUTWIDTH-1:1]}; //load the data_in with what is in buffer_in (from the slave)
 							      if (byte_count +1'b1 == bytes_to_run)begin  //we done
 						             sck <= 1'b0; //clock can shut off.
 				                   state <= FINISH; //we've run the number of bits we needed!
 							      end
 							      else begin
-											buffer_out <= {data_in[INOUTWIDTH-2:0],1'b0}; //grab fresh set of data
-											mosi <= data_in[INOUTWIDTH-1]; //new value on mosi
-					                 count <= 3'b1;
-										  byte_count <= byte_count +1'b1; //one more byte!
-										  state <= RUN; //not needed, but for clarity
-									     sck <= ~sck; //keep going, child.
+										buffer_out <= {data_to_send[INOUTWIDTH-2:0],1'b0}; //grab fresh set of data
+										mosi <= data_to_send[INOUTWIDTH-1]; //new value on mosi
+					                    count <= 8'b1;
+										byte_count <= byte_count +1'b1; //one more byte!
+										state <= RUN; //not needed, but for clarity
+									    sck <= ~sck; //keep going, child.
 									 end
 								 end
 								else begin
@@ -130,6 +130,9 @@ module spi_master #(parameter INOUTWIDTH = 24)
 					FINISH: begin
 						 cs <= ~(8'b0);
 						 state <= IDLE;
+					end
+					default: begin
+					   state <= IDLE;
 					end
 				endcase
 			end

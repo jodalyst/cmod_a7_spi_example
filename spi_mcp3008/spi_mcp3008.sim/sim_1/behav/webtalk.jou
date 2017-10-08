@@ -2,11 +2,11 @@
 # Webtalk v2017.2 (64-bit)
 # SW Build 1909853 on Thu Jun 15 18:39:10 MDT 2017
 # IP Build 1909766 on Thu Jun 15 19:58:00 MDT 2017
-# Start of session at: Sun Oct  8 15:29:27 2017
-# Process ID: 5737
+# Start of session at: Sun Oct  8 17:46:55 2017
+# Process ID: 12151
 # Current directory: /home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.sim/sim_1/behav
-# Command line: wbtcv -mode batch -source /home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.sim/sim_1/behav/xsim.dir/spi_master_tb_behav/webtalk/xsim_webtalk.tcl -notrace
+# Command line: wbtcv -mode batch -source /home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.sim/sim_1/behav/xsim.dir/main_sys_tb_behav/webtalk/xsim_webtalk.tcl -notrace
 # Log file: /home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.sim/sim_1/behav/webtalk.log
 # Journal file: /home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.sim/sim_1/behav/webtalk.jou
 #-----------------------------------------------------------
-source /home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.sim/sim_1/behav/xsim.dir/spi_master_tb_behav/webtalk/xsim_webtalk.tcl -notrace
+source /home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.sim/sim_1/behav/xsim.dir/main_sys_tb_behav/webtalk/xsim_webtalk.tcl -notrace

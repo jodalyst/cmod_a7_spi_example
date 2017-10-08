@@ -1,6 +1,14 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sources_1/imports/new/dimmer.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dimmer
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sources_1/imports/new/main_system.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module main_system
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sources_1/imports/new/spi_master.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module spi_master
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sim_1/imports/cmod_a7_spi_example/spi_master_tb.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module spi_master_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sources_1/new/main_sys_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module main_sys_tb
+INFO: [VRFC 10-2458] undeclared symbol sck, assumed default net type wire [/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sources_1/new/main_sys_tb.v:34]
+INFO: [VRFC 10-2458] undeclared symbol miso, assumed default net type wire [/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sources_1/new/main_sys_tb.v:34]
+INFO: [VRFC 10-2458] undeclared symbol mosi, assumed default net type wire [/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sources_1/new/main_sys_tb.v:34]
+INFO: [VRFC 10-2458] undeclared symbol cs, assumed default net type wire [/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.srcs/sources_1/new/main_sys_tb.v:34]
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/jodalyst/vivado/spi_mcp3008/spi_mcp3008.sim/sim_1/behav/glbl.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module glbl
