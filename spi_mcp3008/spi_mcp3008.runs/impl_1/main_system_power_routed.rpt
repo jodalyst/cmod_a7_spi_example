@@ -1,7 +1,7 @@
 Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
-| Date             : Sun Oct  8 17:54:51 2017
+| Date             : Mon Oct  9 08:51:54 2017
 | Host             : ubuntu running 64-bit Ubuntu 16.04.3 LTS
 | Command          : report_power -file main_system_power_routed.rpt -pb main_system_power_summary_routed.pb -rpx main_system_power_routed.rpx
 | Design           : main_system
@@ -50,12 +50,12 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |    <0.001 |        3 |       --- |             --- |
-| Slice Logic    |    <0.001 |      226 |       --- |             --- |
-|   LUT as Logic |    <0.001 |       87 |     20800 |            0.42 |
-|   Register     |    <0.001 |      107 |     41600 |            0.26 |
+| Slice Logic    |    <0.001 |      218 |       --- |             --- |
+|   LUT as Logic |    <0.001 |       84 |     20800 |            0.40 |
+|   Register     |    <0.001 |      103 |     41600 |            0.25 |
 |   CARRY4       |    <0.001 |       13 |      8150 |            0.16 |
 |   Others       |     0.000 |        6 |       --- |             --- |
-| Signals        |    <0.001 |      160 |       --- |             --- |
+| Signals        |    <0.001 |      156 |       --- |             --- |
 | I/O            |     0.002 |       14 |       106 |           13.21 |
 | Static Power   |     0.072 |          |           |                 |
 | Total          |     0.074 |          |           |                 |

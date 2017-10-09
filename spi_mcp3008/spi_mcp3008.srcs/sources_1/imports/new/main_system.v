@@ -30,8 +30,9 @@ module main_system(input wire sysclk,
     inout [1:0]pio
     );
     wire cs, mosi,miso,sck; //chip select, si, so, sck
-    parameter commwidth = 18;
-    assign g[3:0] = {sck,miso,mosi,cs}; //link pins to wires with understandable names
+    parameter commwidth = 17;
+    //assign g[3:0] = {sck,miso,mosi,cs}; //link pins to wires with understandable names
+    assign g[3:0] = {cs, mosi, miso,sck};
     //some random heartbeat crap for LEDs to know it is uploading    
     assign led[1] = sysclk;
     //led flashing "heartbeat" code...
@@ -65,7 +66,7 @@ module main_system(input wire sysclk,
     wire [7:0] chip_selects; ///chip selects
     assign cs = chip_selects[0]; //tft chip select
     
-    spi_master #(.INOUTWIDTH(18)) spm(.sysclk(sysclk),.ss(selection),.data_to_send(data_to_send),
+    spi_master #(.INOUTWIDTH(commwidth)) spm(.sysclk(sysclk),.ss(selection),.data_to_send(data_to_send),
     .how_many_bytes(bytes_to_send), .new_data(new_data), .cs(chip_selects), .data_in(data_received),
     .mosi(mosi),
     .miso(miso),
@@ -96,7 +97,7 @@ module main_system(input wire sysclk,
                     rst <= 1'b0;
                     selection <= 3'b0; //pick device 0
                     bytes_to_send <= 16'd1; //send two bytes and read one byte
-                    data_to_send <= 18'b11_001_0000_0000_0000;
+                    data_to_send <= 17'b11_001_0000_0000_0000;
                     state <= T1;
                 end else begin
                     trigger <= 1'b0;
@@ -113,7 +114,7 @@ module main_system(input wire sysclk,
                 trigger <=1'b0;
                 if (new_data)begin
                     state <= IDLE;
-                    brightness <= data_received[7:0];
+                    brightness <= data_received[9:2];
                 end
             end
             default:

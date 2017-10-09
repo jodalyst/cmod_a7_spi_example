@@ -1,7 +1,7 @@
 Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
-| Date         : Sun Oct  8 17:54:37 2017
+| Date         : Mon Oct  9 08:51:41 2017
 | Host         : ubuntu running 64-bit Ubuntu 16.04.3 LTS
 | Command      : report_control_sets -verbose -file main_system_control_sets_placed.rpt
 | Design       : main_system
@@ -23,7 +23,7 @@ Table of Contents
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
 | Number of unique control sets                            |    10 |
-| Unused register locations in slices containing registers |    37 |
+| Unused register locations in slices containing registers |    33 |
 +----------------------------------------------------------+-------+
 
 
@@ -33,10 +33,10 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |              17 |            6 |
+| No           | No                    | No                     |              17 |            5 |
 | No           | No                    | Yes                    |               0 |            0 |
 | No           | Yes                   | No                     |              24 |            6 |
-| Yes          | No                    | No                     |              57 |           18 |
+| Yes          | No                    | No                     |              53 |           20 |
 | Yes          | No                    | Yes                    |               0 |            0 |
 | Yes          | Yes                   | No                     |               9 |            3 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
@@ -50,13 +50,13 @@ Table of Contents
 +-------------------+---------------------------+----------------------+------------------+----------------+
 |  led_OBUF_BUFG[1] | spm/__9/i__n_0            |                      |                1 |              1 |
 |  led_OBUF_BUFG[1] | spm/cs[0]_i_1_n_0         |                      |                1 |              1 |
-|  led_OBUF_BUFG[1] | spm/__1/i__n_0            |                      |                2 |              6 |
-|  led_OBUF_BUFG[1] | spm/__3/i__n_0            |                      |                3 |              8 |
-|  led_OBUF_BUFG[1] | spm/E[0]                  |                      |                2 |              8 |
+|  led_OBUF_BUFG[1] | spm/__1/i__n_0            |                      |                2 |              5 |
+|  led_OBUF_BUFG[1] | spm/E[0]                  |                      |                3 |              8 |
+|  led_OBUF_BUFG[1] | spm/__3/i__n_0            |                      |                2 |              8 |
 |  led_OBUF_BUFG[1] | spm/__1/i__n_0            | spm/count[8]_i_1_n_0 |                3 |              9 |
-|  led_OBUF_BUFG[1] | spm/__7/i__n_0            |                      |                5 |             16 |
-|  led_OBUF_BUFG[1] |                           |                      |                6 |             17 |
-|  led_OBUF_BUFG[1] | spm/buffer_in[17]_i_1_n_0 |                      |                4 |             17 |
+|  led_OBUF_BUFG[1] | spm/buffer_in[16]_i_1_n_0 |                      |                5 |             14 |
+|  led_OBUF_BUFG[1] | spm/__7/i__n_0            |                      |                6 |             16 |
+|  led_OBUF_BUFG[1] |                           |                      |                5 |             17 |
 |  led_OBUF_BUFG[1] |                           | btn_IBUF[0]          |                6 |             24 |
 +-------------------+---------------------------+----------------------+------------------+----------------+
 
@@ -65,10 +65,11 @@ Table of Contents
 | Fanout | Number of ControlSets |
 +--------+-----------------------+
 | 1      |                     2 |
-| 6      |                     1 |
+| 5      |                     1 |
 | 8      |                     2 |
 | 9      |                     1 |
-| 16+    |                     4 |
+| 14     |                     1 |
+| 16+    |                     3 |
 +--------+-----------------------+
 
 
